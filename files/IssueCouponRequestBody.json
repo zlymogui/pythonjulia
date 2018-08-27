@@ -1,0 +1,8 @@
+{
+  "root": {
+    "coupon": [{
+      "series_id": "1132",
+      "customer": { "external_id": "D20010321001" }
+    }]
+  }
+}

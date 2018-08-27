@@ -1,0 +1,44 @@
+{
+  "root":{
+    "transaction":[
+      {
+        "bill_client_id":"339242759",
+        "type":"regular",
+        "number":"JZ0214002",
+        "amount":"5000",
+        "notes":"2 line items",
+        "billing_time":"2018-02-14 09:49:00",
+        "gross_amount":"5000",
+        "discount":"0",
+        "line_items": {
+				"line_item":[{
+					"serial": 1,
+					"item_code": "D7414SBP01-BK",
+					"description": "",
+					"qty": "1",
+					"rate": "2000",
+					"discount": "0",
+					"value": "2000",
+					"amount": "2000"
+				},
+				{
+					"serial": 2,
+					"item_code": "D6129TCT26-NV/40",
+					"description": "",
+					"qty": "2",
+					"rate": "1500",
+					"discount": "0",
+					"value": "3000",
+					"amount": "3000"
+				}
+				]
+			},
+        "customer":{
+          "mobile":"8618221426687",
+          "email":"zhoumogui@mailinator.com",
+          "nickname":"julia1"
+        }
+      }
+    ]
+  }
+}
