@@ -38,8 +38,11 @@ class ExportMemberV2_1():
                  resp_mobile = i["value"]
              if i["type"] == "externalId":
                  resp_externalId = i["value"]
+        print('---')
+        print(resp["profiles"])
+        #resp_firstName = resp["profiles"][0]["firstName"]
         resplist=[userId,resp_mobile,resp_externalId,resp_bday,resp_tnflastupdate,resp_gender]
-        print(resplist)
-        print(len(resplist))
+        #print(resplist)
+        #print(len(resplist))
         return resplist
 

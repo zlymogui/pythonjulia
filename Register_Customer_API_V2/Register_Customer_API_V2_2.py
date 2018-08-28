@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
+# birthday,gender,city
 
 import requests
 import json
@@ -15,9 +16,9 @@ filename = '/pythonjulia/files/TNF Demo -- Register Customer.xls'
 
 def RegisterWeChat():
         # 接口的url
-        headers = Headers.HEADERS["tnf_demo_wechat"]
-        preUrl = Urls.URLS["tnf_demo"]["url"]
-        source = Urls.URLS["tnf_demo"]["source2"]
+        headers = Headers.HEADERS["tnf_live_import"]
+        preUrl = Urls.URLS["tnf_live"]["url"]
+        source = Urls.URLS["tnf_live"]["source2"]
         getdata = readexcel.read_excel(filename)
         sheet1 = getdata.sheet_by_index(0)  # sheet索引从0开始
         print(sheet1)
@@ -32,26 +33,43 @@ def RegisterWeChat():
                 createDate = datetimeformat.string_toDatetime(createDateS)
             else: createDate = ''
             externalId = sheet1.cell_value(i, 3)
-            firstName = sheet1.cell_value(i, 4)
+            if sheet1.cell_type(i, 4)==2 and int(sheet1.cell_value(i, 4)) == sheet1.cell_value(i, 4):
+               firstName = int(sheet1.cell_value(i, 4))
+            else:
+               firstName = str(sheet1.cell_value(i, 4))
+
             birthdayS = sheet1.cell_value(i, 5)
             if birthdayS != '':
                 birthday = datetimeformat.string_toDate(birthdayS)
             else: birthday = ''
             gender = sheet1.cell_value(i, 6)
             openid = sheet1.cell_value(i, 7)
+            city = sheet1.cell_value(i,11)
 
-            if birthday !='' and gender != '':
-                body = "{\"profiles\":[{\"firstName\":\"%s\",\"fields\":{\"gender\":\"%s\",\"birthday\":\"%s\"},\"identifiers\":[{\"type\":\"wechat\",\"value\":\"%s\"},{\"type\":\"mobile\",\"value\":\"%s\"},{\"type\":\"externalId\",\"value\":\"%s\"},{\"type\":\"email\",\"value\":\"%s\"}],\"commChannels\":[{\"type\":\"wechat\",\"value\":\"%s\",\"primary\":true,\"verified\":true},{\"type\":\"mobile\",\"value\":\"%s\",\"primary\":true,\"verified\":true}]}],\"loyaltyInfo\":{\"loyaltyType\":\"loyalty\",\"attributionV2\": {\"createDate\": \"%s\"}}}" \
-                       % (firstName, gender, birthday, openid, mobile, externalId, email, openid, mobile, createDate)
-            elif birthday !='' and gender == '':
+            if birthday !='' and gender != '' and city != '' : # 111
+                body = "{\"profiles\":[{\"firstName\":\"%s\",\"fields\":{\"gender\":\"%s\",\"birthday\":\"%s\",\"city\":\"%s\"},\"identifiers\":[{\"type\":\"wechat\",\"value\":\"%s\"},{\"type\":\"mobile\",\"value\":\"%s\"},{\"type\":\"externalId\",\"value\":\"%s\"},{\"type\":\"email\",\"value\":\"%s\"}],\"commChannels\":[{\"type\":\"wechat\",\"value\":\"%s\",\"primary\":true,\"verified\":true},{\"type\":\"mobile\",\"value\":\"%s\",\"primary\":true,\"verified\":true}]}],\"loyaltyInfo\":{\"loyaltyType\":\"loyalty\",\"attributionV2\": {\"createDate\": \"%s\"}}}" \
+                       % (firstName, gender, birthday, city, openid, mobile, externalId, email, openid, mobile, createDate)
+            elif birthday !='' and gender != ''and city == '': # 110
+                body = "{\"profiles\":[{\"firstName\":\"%s\",\"fields\":{\"birthday\":\"%s\",\"gender\":\"%s\"},\"identifiers\":[{\"type\":\"wechat\",\"value\":\"%s\"},{\"type\":\"mobile\",\"value\":\"%s\"},{\"type\":\"externalId\",\"value\":\"%s\"},{\"type\":\"email\",\"value\":\"%s\"}],\"commChannels\":[{\"type\":\"wechat\",\"value\":\"%s\",\"primary\":true,\"verified\":true},{\"type\":\"mobile\",\"value\":\"%s\",\"primary\":true,\"verified\":true}]}],\"loyaltyInfo\":{\"loyaltyType\":\"loyalty\",\"attributionV2\": {\"createDate\": \"%s\"}}}" \
+                       % (firstName, birthday,gender, openid, mobile, externalId, email, openid, mobile, createDate)
+            elif birthday !='' and gender == ''and city == '': # 100
                 body = "{\"profiles\":[{\"firstName\":\"%s\",\"fields\":{\"birthday\":\"%s\"},\"identifiers\":[{\"type\":\"wechat\",\"value\":\"%s\"},{\"type\":\"mobile\",\"value\":\"%s\"},{\"type\":\"externalId\",\"value\":\"%s\"},{\"type\":\"email\",\"value\":\"%s\"}],\"commChannels\":[{\"type\":\"wechat\",\"value\":\"%s\",\"primary\":true,\"verified\":true},{\"type\":\"mobile\",\"value\":\"%s\",\"primary\":true,\"verified\":true}]}],\"loyaltyInfo\":{\"loyaltyType\":\"loyalty\",\"attributionV2\": {\"createDate\": \"%s\"}}}" \
                        % (firstName, birthday, openid, mobile, externalId, email, openid, mobile, createDate)
-            elif birthday =='' and gender != '':
+            elif birthday =='' and gender != ''and city == '': # 010
                 body = "{\"profiles\":[{\"firstName\":\"%s\",\"fields\":{\"gender\":\"%s\"},\"identifiers\":[{\"type\":\"wechat\",\"value\":\"%s\"},{\"type\":\"mobile\",\"value\":\"%s\"},{\"type\":\"externalId\",\"value\":\"%s\"},{\"type\":\"email\",\"value\":\"%s\"}],\"commChannels\":[{\"type\":\"wechat\",\"value\":\"%s\",\"primary\":true,\"verified\":true},{\"type\":\"mobile\",\"value\":\"%s\",\"primary\":true,\"verified\":true}]}],\"loyaltyInfo\":{\"loyaltyType\":\"loyalty\",\"attributionV2\": {\"createDate\": \"%s\"}}}" \
-                       % (firstName, gender, openid, mobile, externalId, email, openid, mobile, createDate)
-            elif birthday =='' and gender == '':
+                       % (firstName, gender,openid, mobile, externalId, email, openid, mobile, createDate)
+            elif birthday =='' and gender == ''and city != '': # 001
+                body = "{\"profiles\":[{\"firstName\":\"%s\",\"fields\":{\"city\":\"%s\"},\"identifiers\":[{\"type\":\"wechat\",\"value\":\"%s\"},{\"type\":\"mobile\",\"value\":\"%s\"},{\"type\":\"externalId\",\"value\":\"%s\"},{\"type\":\"email\",\"value\":\"%s\"}],\"commChannels\":[{\"type\":\"wechat\",\"value\":\"%s\",\"primary\":true,\"verified\":true},{\"type\":\"mobile\",\"value\":\"%s\",\"primary\":true,\"verified\":true}]}],\"loyaltyInfo\":{\"loyaltyType\":\"loyalty\",\"attributionV2\": {\"createDate\": \"%s\"}}}" \
+                   % (firstName, city,openid, mobile, externalId, email, openid, mobile, createDate)
+            elif birthday !='' and gender == ''and city != '': # 101
+                body = "{\"profiles\":[{\"firstName\":\"%s\",\"fields\":{\"birthday\":\"%s\",\"city\":\"%s\"},\"identifiers\":[{\"type\":\"wechat\",\"value\":\"%s\"},{\"type\":\"mobile\",\"value\":\"%s\"},{\"type\":\"externalId\",\"value\":\"%s\"},{\"type\":\"email\",\"value\":\"%s\"}],\"commChannels\":[{\"type\":\"wechat\",\"value\":\"%s\",\"primary\":true,\"verified\":true},{\"type\":\"mobile\",\"value\":\"%s\",\"primary\":true,\"verified\":true}]}],\"loyaltyInfo\":{\"loyaltyType\":\"loyalty\",\"attributionV2\": {\"createDate\": \"%s\"}}}" \
+                   % (firstName, birthday,city,openid, mobile, externalId, email, openid, mobile, createDate)
+            elif birthday =='' and gender != ''and city != '': # 011
+                body = "{\"profiles\":[{\"firstName\":\"%s\",\"fields\":{\"gender\":\"%s\",\"city\":\"%s\"},\"identifiers\":[{\"type\":\"wechat\",\"value\":\"%s\"},{\"type\":\"mobile\",\"value\":\"%s\"},{\"type\":\"externalId\",\"value\":\"%s\"},{\"type\":\"email\",\"value\":\"%s\"}],\"commChannels\":[{\"type\":\"wechat\",\"value\":\"%s\",\"primary\":true,\"verified\":true},{\"type\":\"mobile\",\"value\":\"%s\",\"primary\":true,\"verified\":true}]}],\"loyaltyInfo\":{\"loyaltyType\":\"loyalty\",\"attributionV2\": {\"createDate\": \"%s\"}}}" \
+                   % (firstName, gender,city,openid, mobile, externalId, email, openid, mobile, createDate)
+            elif birthday =='' and gender == ''and city == '': # 000
                 body = "{\"profiles\":[{\"firstName\":\"%s\",\"identifiers\":[{\"type\":\"wechat\",\"value\":\"%s\"},{\"type\":\"mobile\",\"value\":\"%s\"},{\"type\":\"externalId\",\"value\":\"%s\"},{\"type\":\"email\",\"value\":\"%s\"}],\"commChannels\":[{\"type\":\"wechat\",\"value\":\"%s\",\"primary\":true,\"verified\":true},{\"type\":\"mobile\",\"value\":\"%s\",\"primary\":true,\"verified\":true}]}],\"loyaltyInfo\":{\"loyaltyType\":\"loyalty\",\"attributionV2\": {\"createDate\": \"%s\"}}}" \
-                   % (firstName, openid, mobile, externalId, email, openid, mobile, createDate)
+                   % (firstName,openid, mobile, externalId, email, openid, mobile, createDate)
             print(body)
             r = requests.request("post", url, data=body.encode('utf-8'), headers=headers)
             print(r)
@@ -73,7 +91,7 @@ def RegisterWeChat():
                 outputlist=[code,status,message]
             print(outputlist)
             print(len(outputlist))
-            start = 11
+            start = 12
             writeexcel.write_excel(filename, i, outputlist, start)
 
 RegisterWeChat()

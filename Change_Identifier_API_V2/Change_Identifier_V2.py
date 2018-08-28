@@ -36,15 +36,18 @@ def Change_Identifier():
             print(r)
             resp = json.loads(r.text)
             print(resp)
-            if "createdId" in resp and "code" not in resp:
+            if "createdId" in resp and "warnings" not in resp:
                 userid = resp["createdId"]
                 outputlist = [userid]
-            elif "createdId" in resp and "code" in resp:
+            elif "createdId" in resp and "warnings" in resp and "code" in resp["warnings"][0]:
                 userid = resp["createdId"]
                 code = resp["warnings"][0]["code"]
                 status = resp["warnings"][0]["status"]
                 message = resp["warnings"][0]["message"]
                 outputlist=[userid,code,status,message]
+            elif "createdId" in resp and "warnings" in resp and "code" not in resp["warnings"]:
+                userid = resp["createdId"]
+                outputlist=[userid]
             else:
                 code = resp["errors"][0]["code"]
                 status = resp["errors"][0]["status"]

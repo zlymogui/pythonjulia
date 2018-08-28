@@ -13,9 +13,15 @@ def requestPrepare(brandEnv,headPswType,urlType):
     preUrl = Urls.URLS[urlType]
     return auth,header,preUrl
 
+def requestPrepareWithDiffTill(till,brandEnv,headPswType,urlType):
+    auth = (till, Headers.AUTHS[brandEnv]["Password"])
+    header = Headers.HEADERS1[headPswType]
+    preUrl = Urls.URLS[urlType]
+    return auth,header,preUrl
+
 def requestPOST(url,bodyjson,header,auth):
     body = json.dumps(bodyjson, ensure_ascii=False)
-    r = requests.request("post", url, data=body, headers=header, auth=auth)
+    r = requests.request("post", url, data=body.encode('utf-8'), headers=header, auth=auth)
     resp = json.loads(r.text)
     return resp
 

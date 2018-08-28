@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-# 没有city
+# birthday,gender
 
 import requests
 import json

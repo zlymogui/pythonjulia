@@ -8,16 +8,16 @@ from Utilities import readexcel
 from Utilities import writeexcel
 from xlrd.timemachine import xrange
 
-filename = "/pythonjulia/files/TNF -- Issue Coupon.xls"
+filename = "/pythonjulia/files/Descente demo -- Issue Coupon_1.xls"
 
 # 接口的header
-headers = Headers.HEADERS["tnf_demo"]
+headers = Headers.HEADERS["descente_demo"]
 getdata = readexcel.read_excel(filename)
 sheet1 = getdata.sheet_by_index(0)  # sheet索引从0开始
 
 def IssueCoupon():
     # 接口的url
-    url = "https://apichina.capillarytech-cn.com/api/v1.1/coupon/issue?format=json"
+    url = "https://api.capillarytech.cn.com/v1.1/coupon/issue?format=json"
     for i in xrange(1, sheet1.nrows):  # 行数
         series_id = int(sheet1.cell_value(i,0))
         user_id = int(sheet1.cell_value(i,1))

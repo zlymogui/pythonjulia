@@ -1,65 +1,26 @@
 #!/usr/bin/python
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
-import xlwt
-from xlwt.compat import unicode, xrange
 from openpyxl import Workbook
-from xlutils.copy import copy
-from Utilities import readexcel
-'''
-设置单元格样式
-'''
-#filename = "/pythonjulia/files/TNF Demo -- Fetch Transaction1.xls"
+from openpyxl.utils import get_column_letter
 
-def set_style(name, height, bold=False):
-    style = xlwt.XFStyle()  # 初始化样式
-    font = xlwt.Font()  # 为样式创建字体
-    font.name = name  # 'Times New Roman'
-    font.color_index = 4
-    font.height = height
-    style.font = font
-    return style
+filename = "/pythonjulia/files/TNF Demo -- Advance search_2.xlsx"
 
+def write_excel(filename):
+    # 在内存中创建一个workbook对象，而且会至少创建一个 worksheet
+    wb = Workbook()
+    # 获取当前活跃的worksheet,默认就是第一个worksheet
+    ws = wb.active
+    # 设置单元格的值，A1等于6(测试可知openpyxl的行和列编号从1开始计算)，B1等于7
+    ws.cell(row=1, column=1).value = 6
+    #ws.cell("B1").value = 7
+    #从第2行开始，写入9行10列数据，值为对应的列序号A、B、C、D...
+    for row in range(2,11):
+        for col in range (1,11):
+             ws.cell(row=row, column=col).value = get_column_letter(col)
+    #可以使用append插入一行数据
+    ws.append(["我","你","她"])
+    #保存
+    wb.save(filename)
 
-def write_excel(filename, i, outputlist, start): # start 传的值是开始列
-    oldWb = readexcel.read_excel(filename)
-    newWb = copy(oldWb)
-    newWs = newWb.get_sheet(0)
-    num = len(outputlist)
-
-    for a in range(0, num):
-        print("newWs.write(", i, start, a, outputlist[a], "set_style('Arial', 220, True))")
-        newWs.write(i, start, outputlist[a], set_style('Arial', 220, True))
-        for n in range(start + 1, num + start):
-            print("newWs.write(", i, n, a + n - start, outputlist[a + n - start], "set_style('Arial', 220, True))")
-            newWs.write(i, n, outputlist[a + n - start], set_style('Arial', 220, True))
-        break
-
-    print("write new values ok")
-    newWb.save(filename)
-    print("save with same name ok")
-
-'''
-def write_excel2(filename,i,Actual_code,Actual_message,birthday):
-    oldWb = readexcel.read_excel(filename)
-    newWb = copy(oldWb)
-    newWs = newWb.get_sheet(0)
-    newWs.write(i, 3, Actual_code,set_style('Arial', 220, True))
-    newWs.write(i, 4, Actual_message,set_style('Arial', 220, True))
-    newWs.write(i, 5, birthday, set_style('Arial', 220, True))
-    print("write new values ok")
-    newWb.save(filename)
-    print("save with same name ok")
-
-def write_excel1(filename,i,Coupon_Code,Coupon_description,valid_till,discount_value):
-    oldWb = readexcel.read_excel(filename)
-    newWb = copy(oldWb)
-    newWs = newWb.get_sheet(0)
-    newWs.write(i, 1, Coupon_Code,set_style('Arial', 220, True))
-    newWs.write(i, 2, Coupon_description,set_style('Arial', 220, True))
-    newWs.write(i, 3, valid_till, set_style('Arial', 220, True))
-    newWs.write(i, 4, discount_value, set_style('Arial', 220, True))
-    print("write new values ok")
-    newWb.save(filename)
-    print("save with same name ok")
-'''
+read_excel(filename)

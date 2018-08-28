@@ -1,39 +1,77 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-import requests
-import json
-from Common import Headers
-from Utilities import readjson
 
-# 接口的header
-headers = Headers.HEADERS["purples"]
-filename='/pythonjulia/files/AddTransactionRequestBody.json'
-body = readjson.read_json(filename)
-print(body)
+from Utilities import datetimeformat
+from Utilities import requestTools
 
-def AddTransactionDetails():
+
+def AddTransaction(preUrl,header,auth,user_id,billing_time,order_number):
     # 接口的url
-    url = "https://api.capillarytech.cn.com/v1.1/transaction/add?format=json"
-    #r = requests.post(url, data = body,headers=headers)
-    r = requests.request("post", url, data = body,headers=headers)
-    resp = json.loads(r.text)
+    print(preUrl)
+    url = preUrl + "v1.1/transaction/add?format=json"
+    print(url)
+    bodyjson = {
+        "root": {
+            "transaction": {
+                "type": "regular",
+                "notes": "",
+                "customer": {
+                    "user_id": user_id
+                },
+                "number": order_number,
+                "billing_time": billing_time,
+                "amount": "450",
+                "discount": 550,
+                "gross_amount": "1000",
+                "line_items": {
+                    "line_item": [
+                        {
+                            "item_code": "juliaxxxxxxxx01",
+                            "qty": 1,
+                            "rate": "500",
+                            "discount": 50,
+                            "value": "500",
+                            "amount": "300",
+                            "serial": 1,
+                            "description": "Goods|50;Points|100;Coupon|50;"
+                        },
+                        {
+                            "item_code": "juliaxxxxxxxx02",
+                            "qty": 1,
+                            "rate": "500",
+                            "discount": 100,
+                            "value": "500",
+                            "amount": "150",
+                            "serial": 1,
+                            "description": "Goods|100;Points|200;Coupon|50;"
+                        }
+                    ]
+                },
+                "payment_details": {
+                    "payment": [
+                        {
+                            "mode": "Cash",
+                            "value": "450"
+                        },
+                        {
+                            "mode": "Points",
+                            "value": "300"
+                        },
+                        {
+                            "mode": "Discount Coupon",
+                            "value": "100"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+    resp = requestTools.requestPOST(url, bodyjson, header, auth)
     print(resp)
 
-    status = r.status_code
-    if status != 200:
-        print ("\x1b[31mfail: status-> {} {}\x1b[0m".format(status, url))
-
-    resp = json.loads(r.text)
-    resp_code = resp["response"]["transactions"]["transaction"][0]["item_status"]["code"]
-    resp_message = resp["response"]["transactions"]["transaction"][0]["item_status"]["message"]
-    transcation_number = resp["response"]["transactions"]["transaction"][0]["number"]
-
-    if resp_code== 600 and resp_message == "Transaction added successfully":
-        print("\x1b[32mpass: {}\x1b[0m".format(transcation_number))
-    else:
-        print("\x1b[31mfail: {} code: {}, message:{}\x1b[0m".format(transcation_number,resp_code,resp_message))
-    return resp_code,resp_message
-
 if __name__ == "__main__":
-    AddTransactionDetails()
+    auth, header, preUrl = requestTools.requestPrepare("kolon_demo", "Headers_MD5", "url_MD5")
+    billing_time = datetimeformat.getCurrentDateTime()
+    orderNumber = requestTools.generateOrderNumber()
+    AddTransaction(preUrl,header, auth, '339915126',billing_time,orderNumber)
