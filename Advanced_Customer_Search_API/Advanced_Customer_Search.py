@@ -8,14 +8,14 @@ from Utilities import writeexcel
 from xlrd.timemachine import xrange
 from Common import Headers
 
-filename = "/pythonjulia/files/TNF Demo -- Advance search_1.xls"
+filename = "/pythonjulia/files/TNF live -- Advance search_2.xls"
 
 def Advanced_Customer_Search(cellValues):
         # 接口的url
         #url = "https://apichina.capillarytech-cn.com/api/v2/customers/search?q=%s" % (cellValues)
-        url = "https://api.capillarytech.cn.com/v2/customers/search?q=%s"% (cellValues)
+        url = "https://apichina.capillarytech-cn.com/api/v2/customers/search?q=%s"% (cellValues)
         print(url)
-        r = requests.request("get", url, headers=Headers.HEADERS["kolon_live"])
+        r = requests.request("get", url, headers=Headers.HEADERS["tnf_live_import"])
         resp = json.loads(r.text)
 
         total_count= resp["pagination"]["total"]

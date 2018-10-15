@@ -22,6 +22,12 @@ def requestPrepareWithDiffTill(till,brandEnv,headPswType,urlType):
 def requestPOST(url,bodyjson,header,auth):
     body = json.dumps(bodyjson, ensure_ascii=False)
     r = requests.request("post", url, data=body.encode('utf-8'), headers=header, auth=auth)
+    print(r)
+    resp = json.loads(r.text)
+    return resp
+
+def requestGET(url,header,auth):
+    r = requests.request("get", url, headers=header, auth=auth)
     resp = json.loads(r.text)
     return resp
 

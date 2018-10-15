@@ -6,7 +6,7 @@ from Utilities import writeexcel
 from xlrd.timemachine import xrange
 from GET_Customerid_API.GetCustomerId import GetCustomerIdAPI
 
-filename = "/pythonjulia/files/TNF Demo -- GetCustomerDetailsByMobile.xls"
+filename = "/pythonjulia/files/TNF Live -- GetCustomerDetailsByMobile.xls"
 
 getdata = readexcel.read_excel(filename)
 sheet1 = getdata.sheet_by_index(0)  # sheet索引从0开始

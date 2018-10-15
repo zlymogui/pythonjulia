@@ -6,7 +6,7 @@ from Utilities.readexcel_xlsx import read_excel
 from Utilities import APIlogs
 
 logger = APIlogs.logs("LoyaltyMixTransaction")
-ws, ncol, nrow = read_excel("/pythonjulia/files/member_SR_TNF_Mix_1.xlsx", 'Sheet1')
+ws, ncol, nrow = read_excel("/pythonjulia/files/member_混合交易_round2_用于导入.xlsx", 'Sheet3')
 
 def getTransactionLevelData():
     list = []
@@ -80,7 +80,7 @@ def LoyaltyMixTransaction():
                             "purchase_time": "",
                             "attributes": ""}
                         listItemJsonbody.append(jsonbodyA)
-        auth, header, preUrl = requestTools.requestPrepareWithDiffTill(till, "tnf_demo_md5", "Headers_MD5", "url_MD5")
+        auth, header, preUrl = requestTools.requestPrepareWithDiffTill(till, "tnf_live", "Headers_SHA256", "url_SHA256")
         # 接口的url
         url = preUrl+"v1.1/transaction/add?format=json"
         bodyJson = 	{"root": {

@@ -13,11 +13,11 @@ class ExportMemberV2_1():
 
     def ExportMemberV2_1Details(userId):
         # 接口的url
-        preUrl = Urls.URLS["tnf_demo"]["url"]
-        source = Urls.URLS["tnf_demo"]["source3"]
+        preUrl = Urls.URLS["tnf_live"]["url"]
+        source = Urls.URLS["tnf_live"]["source3"]
         url = "%sv2/customers/%s?source=%s&embed=points" % (preUrl,userId,source)
         print(url)
-        r = requests.request("get", url, headers=Headers.HEADERS["tnf_demo"])
+        r = requests.request("get", url, headers=Headers.HEADERS["tnf_live_import"])
         resp = json.loads(r.text)
         print(resp)
         fields=resp["profiles"][0]["fields"]

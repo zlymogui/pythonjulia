@@ -8,7 +8,7 @@ from Utilities import APIlogs
 logger = APIlogs.logs("LoyaltyReturnTransaction")
 
 
-filename = "/pythonjulia/files/member_SR_TNF_1.xlsx"
+filename = "/pythonjulia/files/member_SR_tnf_return.xlsx"
 sheetname = 'sheet1'
 
 ws,ncol,nrow = read_excel(filename,sheetname)
@@ -57,6 +57,7 @@ def LoyaltyReturnTransaction():
             logger.info(str(bodyjson))
             resp = requestTools.requestPOST(url,bodyjson, header, auth)
             #print(resp)
+            print(resp["response"]["status"]["code"])
             if resp["response"]["status"]["code"] == 200:
                 logger.info(str(resp))
             else: logger.info("[ISSUES]"+str(resp))
